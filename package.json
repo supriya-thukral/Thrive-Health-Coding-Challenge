@@ -1,5 +1,11 @@
 {
+  "name": "thrive-health-challenge",
+  "main": "challenge.js",
   "dependencies": {
-    "joi": "^17.9.2"
-  }
+    "joi": "^17.4.2"
+  },
+  "scripts": {
+    "start": "node challenge.js"
+  },
+  "type": "module"
 }

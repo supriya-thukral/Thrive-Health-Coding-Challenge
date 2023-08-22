@@ -1,8 +1,7 @@
 "use strict";
 
 import { existsSync, readFileSync, appendFileSync, writeFileSync } from "fs";
-import { object, number, string, boolean, array } from "joi";
-
+import Joi from "joi";
 const outputFilePath = "./output.txt";
 
 /**
@@ -30,23 +29,23 @@ const readCompanies = readJsonFile("./companies.json");
 const readUsers = readJsonFile("./users.json");
 
 // Schema definitions for the company and user objects.
-const companySchema = object({
-  id: number().integer().min(1).required(),
-  name: string().required(),
-  top_up: number().integer().min(0).required(),
-  email_status: boolean().required(),
-  users: array().items(number().integer().min(1)),
+const companySchema = Joi.object({
+  id: Joi.number().integer().min(1).required(),
+  name: Joi.string().required(),
+  top_up: Joi.number().integer().min(0).required(),
+  email_status: Joi.boolean().required(),
+  users: Joi.array().items(Joi.number().integer().min(1)),
 });
 
-const userSchema = object({
-  id: number().integer().min(1).required(),
-  first_name: string().required(),
-  last_name: string().required(),
-  email: string().email().required(),
-  email_status: boolean().required(),
-  active_status: boolean().required(),
-  tokens: number().integer().min(0).required(),
-  company_id: number().integer().min(1).required(),
+const userSchema = Joi.object({
+  id: Joi.number().integer().min(1).required(),
+  first_name: Joi.string().required(),
+  last_name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  email_status: Joi.boolean().required(),
+  active_status: Joi.boolean().required(),
+  tokens: Joi.number().integer().min(0).required(),
+  company_id: Joi.number().integer().min(1).required(),
 });
 
 /**
@@ -297,9 +296,14 @@ function verifyOutput(outputPath, exampleOutputPath) {
 
 // Run the program.
 try {
+  console.log("Running program...");
+  console.log("Sorting data...");
   sortData(companies, users);
+  console.log("Processing companies and users...");
   processCompaniesAndUsers(companies, users);
+  console.log("Outputting results...");
   outputResults(companies);
+  console.log("Verifying output...");
   verifyOutput(outputFilePath, "./example_output.txt");
 } catch (error) {
   console.error(error.message);
