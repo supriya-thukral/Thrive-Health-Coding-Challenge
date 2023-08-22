@@ -1,7 +1,7 @@
 "use strict";
 
-const fs = require("fs");
-const Joi = require("joi");
+import { existsSync, readFileSync, appendFileSync, writeFileSync } from "fs";
+import { object, number, string, boolean, array } from "joi";
 
 const outputFilePath = "./output.txt";
 
@@ -9,13 +9,13 @@ const outputFilePath = "./output.txt";
  * readJsonFile - Reads a JSON file and returns the parsed JSON.
  */
 function readJsonFile(filePath) {
-  if (!fs.existsSync(filePath)) {
+  if (!existsSync(filePath)) {
     console.error(`The file ${filePath} does not exist!`);
     process.exit(1);
   }
 
   try {
-    const fileContent = fs.readFileSync(filePath, "utf-8");
+    const fileContent = readFileSync(filePath, "utf-8");
     return JSON.parse(fileContent);
   } catch (error) {
     console.error(
@@ -30,23 +30,23 @@ const readCompanies = readJsonFile("./companies.json");
 const readUsers = readJsonFile("./users.json");
 
 // Schema definitions for the company and user objects.
-const companySchema = Joi.object({
-  id: Joi.number().integer().min(1).required(),
-  name: Joi.string().required(),
-  top_up: Joi.number().integer().min(0).required(),
-  email_status: Joi.boolean().required(),
-  users: Joi.array().items(Joi.number().integer().min(1)),
+const companySchema = object({
+  id: number().integer().min(1).required(),
+  name: string().required(),
+  top_up: number().integer().min(0).required(),
+  email_status: boolean().required(),
+  users: array().items(number().integer().min(1)),
 });
 
-const userSchema = Joi.object({
-  id: Joi.number().integer().min(1).required(),
-  first_name: Joi.string().required(),
-  last_name: Joi.string().required(),
-  email: Joi.string().email().required(),
-  email_status: Joi.boolean().required(),
-  active_status: Joi.boolean().required(),
-  tokens: Joi.number().integer().min(0).required(),
-  company_id: Joi.number().integer().min(1).required(),
+const userSchema = object({
+  id: number().integer().min(1).required(),
+  first_name: string().required(),
+  last_name: string().required(),
+  email: string().email().required(),
+  email_status: boolean().required(),
+  active_status: boolean().required(),
+  tokens: number().integer().min(0).required(),
+  company_id: number().integer().min(1).required(),
 });
 
 /**
@@ -58,7 +58,6 @@ const userSchema = Joi.object({
 function validateSchema(schema, data, context) {
   const { error } = schema.validate(data);
   if (error) {
-    // Tell the user what the error is and what they might need to do:
     console.error(
       "Invalid data for " +
         context +
@@ -212,7 +211,7 @@ function categorizeUsersByEmailStatus(users, companies) {
  * @returns {void}
  */
 function appendToOutputFile(text) {
-  fs.appendFileSync(outputFilePath, text);
+  appendFileSync(outputFilePath, text);
 }
 
 /**
@@ -261,7 +260,7 @@ function outputCompany(company) {
  * @returns {void}
  */
 function outputResults(companies) {
-  fs.writeFileSync(outputFilePath, "");
+  writeFileSync(outputFilePath, "");
   appendToOutputFile(`\n`);
   companies.forEach((company) => {
     if (company.usersEmailed.length > 0 || company.usersNotEmailed.length > 0) {
@@ -278,8 +277,8 @@ function outputResults(companies) {
  * @returns {void}
  */
 function verifyOutput(outputPath, exampleOutputPath) {
-  const output = fs.readFileSync(outputPath, "utf-8");
-  const exampleOutput = fs.readFileSync(exampleOutputPath, "utf-8");
+  const output = readFileSync(outputPath, "utf-8");
+  const exampleOutput = readFileSync(exampleOutputPath, "utf-8");
   if (output === exampleOutput) {
     console.log("Output file is correct.");
   } else {
