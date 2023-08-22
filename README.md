@@ -38,3 +38,5 @@ This project processes two JSON files containing information about users and com
    ```
 
 4. **Output**: The output.txt file will be created in the project directory. Any existing output.txt file will be overwritten.
+
+Thank you for your consideration!
