@@ -25,12 +25,6 @@ This project processes two JSON files containing information about users and com
    npm install
    ```
 
-   **Note**: The project relies on Joi for validation. If you do not have Joi installed, you may need to run the following command:
-
-   ```bash
-    npm install joi
-   ```
-
 3. **Run the project**: Run the project using the following command:
 
    ```bash
