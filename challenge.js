@@ -36,8 +36,6 @@ const companySchema = Joi.object({
   top_up: Joi.number().integer().min(0).required(),
   email_status: Joi.boolean().required(),
   users: Joi.array().items(Joi.number().integer().min(1)),
-  usersEmailed: Joi.array().items(Joi.number().integer().min(1)),
-  usersNotEmailed: Joi.array().items(Joi.number().integer().min(1)),
 });
 
 const userSchema = Joi.object({
@@ -109,11 +107,11 @@ class Company {
   }
 
   /**
-   * addUsers - Adds users to the company.
+   * assignUsers - Adds users to the company.
    * @param {array} users - The users to add to the company.
    * @returns {void}
    */
-  addUsers(users) {
+  assignUsers(users) {
     this.users = users;
   }
 
@@ -157,7 +155,7 @@ const companies = readCompanies.map(
 );
 const users = readUsers.map((user) => new User(user));
 
-companies.forEach((company) => company.addUsers(users));
+companies.forEach((company) => company.assignUsers(users));
 
 /**
  * sortData - Sorts the companies and users by id and last name respectively.
@@ -242,11 +240,11 @@ function outputCompany(company) {
   appendToOutputFile(`\tCompany Id: ${company.id}\n`);
   appendToOutputFile(`\tCompany Name: ${company.name}\n`);
   appendToOutputFile(`\tUsers Emailed:\n`);
-  company.usersEmailed?.forEach((user) => {
+  company.usersEmailed.forEach((user) => {
     outputUser(user, company);
   });
   appendToOutputFile(`\tUsers Not Emailed:\n`);
-  company.usersNotEmailed?.forEach((user) => {
+  company.usersNotEmailed.forEach((user) => {
     outputUser(user, company);
   });
   appendToOutputFile(
