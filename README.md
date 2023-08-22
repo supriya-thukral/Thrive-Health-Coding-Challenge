@@ -2,12 +2,14 @@
 
 ## Description
 
-This project processes two JSON files containing information about users and companies, and creates an output.txt file based on specific criteria. This README contains instructions on how to set up and run the project.
+This project processes two JSON files containing information about users and companies, categorizes them, and creates an output.txt file with sorted and processed data based on specific criteria. The code includes validation, error handling, and detailed documentation to ensure accuracy and maintainability.
 
 ## Prerequisites
 
 - Node.js (version 12 or higher recommended)
 - npm (usually comes with Node.js)
+- File System (fs) module (built into Node.js)
+- Joi (for schema validation)
 
 ## Installation
 
@@ -23,7 +25,7 @@ This project processes two JSON files containing information about users and com
    npm install
    ```
 
-   **Note**: If you do not have Joi installed, you may need to run the following command:
+   **Note**: The project relies on Joi for validation. If you do not have Joi installed, you may need to run the following command:
 
    ```bash
     npm install joi
@@ -34,3 +36,5 @@ This project processes two JSON files containing information about users and com
    ```bash
    node challenge.js
    ```
+
+4. **Output**: The output.txt file will be created in the project directory. Any existing output.txt file will be overwritten.
